@@ -1,0 +1,133 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+import time as time
+
+drive = webdriver.Firefox(executable_path=r'C:\Program Files\Mozilla Firefox\geckodriver.exe')
+
+def loginWtfSkins():
+        urlwtf = 'https://www.wtfskins.com'
+        urlwtfauth = 'https://www.wtfskins.com/api/v1/loginv2/?callback=https://www.wtfskins.com/auth2/'
+        drive.get (urlwtf)
+        drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-login-page div.centerWrapper div.loginBox div.flex-col.text-center div.form-check label.form-check-label input.form-check-input.ng-untouched.ng-pristine.ng-valid').click()
+        drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-login-page div.centerWrapper div.loginBox div.flex-col.text-center div.form-check label.form-check-label input.form-check-input.ng-untouched.ng-pristine.ng-valid').click()
+        drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-login-page div.centerWrapper div.loginBox div.flex-col.text-center div.enter-button.pointer').click()
+        drive.get (urlwtfauth)
+        
+def iniciarBot():
+    urlwtfcube = 'https://www.wtfskins.com/cube'
+    drive.get (urlwtfcube)
+    preparacaoAmbiente()
+    inicializacaoUpgrade()
+
+def inicializacaoUpgrade():
+    valor = inicial()
+    valorstr = str(valor)
+    drive.find_element_by_css_selector('.form-control').clear()
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-items div.tab-content div.tab-pane.active app-user-inventory.user-items app-user-inventory-balance div.footer div.custom-input-group input.form-control.ng-untouched.ng-pristine.ng-valid').send_keys(valorstr)
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-items div.tab-content div.tab-pane.active app-user-inventory.user-items app-user-inventory-balance div.footer div.custom-input-group button.btn.btn-main').click()
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-controls div.upgrade-button-container div.upgrade-button.main app-localization-string').click()
+    time.sleep(1)
+    print('Bot Inicializado')
+    upgradeloop(valor)
+
+def preparacaoAmbiente():
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-controls div.multiplier-container div.controllers div.over-under div.toggleFMContainer i.fa.fa-bolt').click()
+    #selencia o barulho
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.settings-container div i.fa.fa-volume-up').click()
+    #selencia o barulho
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.settings-container div i.fa.fa-volume-up').click()
+    #seleciona o multiplicador de 10x
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-controls div.multiplier-container div.controllers div.multipliers div.multiplier-button').click()
+    #seleciona o multiplicador de 1.5x
+    drive.find_element_by_css_selector('div.multiplier-button:nth-child(3)').click()
+    #coloca inventario cliente
+    drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-items div.tab-header ul.nav.nav-tabs li.nav-item a.nav-link.active app-localization-string').click()
+    #fecha a msg do p2p Steam Key
+    drive.find_element_by_css_selector('html body app-root div.page-wrap app-information-feed div div.new-notice div.info-dismiss i.fa.fa-times').click()
+
+def upgradeloop(valorreturn):
+    valor = 0.0
+    valor = valorreturn
+    valor = upgrade(valor)
+    upgradeloop(valor)
+
+def upgrade(valorreturn):
+    drive.find_element_by_css_selector('.form-control').clear()
+    if (testeCondicao(1)==True):
+        time.sleep(0.1)
+        valor = 0.0
+        valor = multiplicador(0,valorreturn)
+        valorstr = str(valor)
+        time.sleep(0.1)
+        print('Apostando;' + valorstr)
+        time.sleep(0.1)
+        drive.find_element_by_css_selector('.form-control').send_keys(str(valorstr))
+        time.sleep(0.1)
+        drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-items div.tab-content div.tab-pane.active app-user-inventory.user-items app-user-inventory-balance div.footer div.custom-input-group button.btn.btn-main').click()
+        time.sleep(0.1)
+        drive.find_element_by_css_selector('.upgrade-button').click()
+        time.sleep(0.8)
+        vendaItens()
+        return valor
+    elif (testeCondicao(2)==False):
+        time.sleep(0.1)
+        valor = 0.0
+        valor = multiplicador(1,valorreturn)
+        valorstr = str(valor)
+        time.sleep(0.1)
+        print('Apostando;' + valorstr)
+        drive.find_element_by_css_selector('.form-control').send_keys(str(valorstr))
+        time.sleep(0.1)
+        drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-items div.tab-content div.tab-pane.active app-user-inventory.user-items app-user-inventory-balance div.footer div.custom-input-group button.btn.btn-main').click()
+        time.sleep(0.1)
+        drive.find_element_by_css_selector('.upgrade-button').click()
+        time.sleep(0.8)
+        return valor
+
+def testeCondicao(op):
+    time.sleep(0.2)
+    html_source = 'aaa'
+    html_source = drive.page_source
+    if op == 1:
+        if 'src="/assets/animations/successfast.webm' in html_source:
+            print('Ganhou!')
+            return True
+    if op == 2:
+        if 'src="/assets/animations/failedfast.webm' in html_source:
+            print('Perdeu!')
+            return False
+
+def vendaItens():
+    time.sleep(0.1)
+    Btn = drive.find_element_by_css_selector('html body app-root div.page-wrap div.main-content div.center-content div.scroll-container app-cube div.cube-items div.tab-content div.tab-pane.active app-user-inventory.user-items app-asset-container#upgrade-cube-inventory app-asset.item.flip-in-diag-2-tl div.asset-wrapper div.text-center.select-asset.pointer div')
+    ActionChains(drive).move_to_element(Btn).move_by_offset(0, 0).perform()
+    time.sleep(0.1)
+    BtnVendaXPACK = '/html/body/app-root/div/div[1]/div/div/app-cube/div[4]/div[2]/div[1]/app-user-inventory/app-asset-container/app-asset[1]/div/div[2]/div/div[2]/app-localization-string'
+    BtnVenda = drive.find_element_by_xpath(BtnVendaXPACK)
+    time.sleep(0.1)
+    drive.execute_script("arguments[0].click();", BtnVenda)
+    time.sleep(0.1)
+    BtnConfirmarVendaXPARK = '/html/body/app-root/div/div[1]/div/div/app-cube/div[4]/div[2]/div[1]/app-user-inventory/app-asset-container/app-asset/div/div[2]/div[2]/button[1]/app-localization-string'
+    BtnConfirmar = drive.find_element_by_xpath(BtnConfirmarVendaXPARK)
+    time.sleep(0.1)
+    drive.execute_script("arguments[0].click();", BtnConfirmar)
+    time.sleep(0.1)
+
+def multiplicador(op, valorreturn):
+    multiplicador = 2
+    if op == 0:
+        valor = 0.0
+        valor = inicial()
+        return valor
+    elif op == 1:
+        valor = 0.0
+        valor = valorreturn
+        valor = valor * multiplicador
+        return valor
+
+def inicial():
+    inicial = 0.01
+    return inicial
+loginWtfSkins()
